@@ -8,9 +8,9 @@ import Form from '@components/Form';
 const EditPrompt = () => {
     const router = useRouter();
     const searchParams = useSearchParams();
-    const promptId = searchParams.get('promptId');
+    const promptId = searchParams.get('id');
 
-    const [submitting, setSubmitting] = useState();
+    const [submitting, setSubmitting] = useState(false);
     const [post, setPost] = useState({
         prompt: '',
         tag: '',
@@ -18,7 +18,7 @@ const EditPrompt = () => {
 
     useEffect(() => {
         const getPromptDetails = async () => {
-            const response = await fetch(`/api/prompts/${promptId}`);
+            const response = await fetch(`/api/prompt/${promptId}`);
             const data = await response.json();
 
             setPost({
@@ -34,7 +34,7 @@ const EditPrompt = () => {
         e.preventDefault();
         setSubmitting(true);
 
-        if(!promptId) return alert('Prompt ID not fount')
+        if(!promptId) return alert('Prompt ID not fount!');
 
         try {
             const response = await fetch(`/api/prompt/${promptId}`, {

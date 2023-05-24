@@ -2,7 +2,7 @@
 
 import {useState, useEffect} from 'react';
 import { useSession } from 'next-auth/react';
-import { useRouter } from 'next/router';
+import { useRouter } from 'next/navigation';
 
 import Profile from '@components/Profile';
 
@@ -17,10 +17,10 @@ const MyProfile = () => {
             const response = await fetch(`/api/users/${session?.user.id}/posts`);
             const data =  await response.json();
 
-            setPosts(data)
+            setPosts(data);
         }
         if(session?.user.id) fetchPosts();
-    }, []);
+    }, [session?.user.id]);
 
     const handleEdit = (post) => {
         router.push(`/update-prompt?id=${post._id}`)
@@ -35,7 +35,9 @@ const MyProfile = () => {
                     method: 'DELETE'
                 });
 
-                const filteredPost = posts.filter((p) => p._id !== post._id)
+                const filteredPosts = posts.filter((p) => p._id !== post._id);
+
+                setPosts(filteredPosts);
             } catch (error) {
                 console.log(error);
             }
